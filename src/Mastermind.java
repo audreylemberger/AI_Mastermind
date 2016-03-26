@@ -1,59 +1,57 @@
-import java.util.List;
 
-/**
- * general code
- * 
- * general sequence of events:
- * 		makeSoultion();
- * 		while not correct guess:
- * 			tqn.makeGuess()
- * 			evaluateGuess()
- * 			tqn.updateConstraints
- * 
- * @author masters Hoffler, Lemberger
- *
- */
 public class Mastermind {
-
-	public static final int NUM_PEGS = 4;
 	
-	private Technique tnq; //of type ConstraintSatisfaction or Genetic. set in Mastermind constructor?? maybe not
-	private int[] solution;
 	
-	/**
-	 * Randomly generate 4 numbers
-	 * @return
-	 */
-	private void makeSolution(){
-		solution = new int[NUM_PEGS];
-		// continut...
+	public static void main(String[] args){
+		System.out.println("Welcome to Mastermind!");
+		System.out.println("Program by Nicole Hoffler and Audrey Lemberger");
+		System.out.println("Choose a technique: ....");
+		
+		//if(....)
+		playRandom();
 		
 	}
 	
-	/**
-	 * Use solution to evaluate the computer's guess
-	 * ***!! May want to replace with a calcRed() and calcWhite()
-	 * 
-	 * @param solution
-	 * @param guess
-	 */
-	private void evaluateGuess(int[] solution, int[] guess){
-		//isTerminal()?
+	
+	private static void playRandom(){
+		System.out.println("\nPlaying with technique Random.");
+		Solution sol = new Solution();
+		Random player = new Random();
+		int[] guess;
 		
-		//TODO int[NUM_PEGS] whitePegs;
-		int redPegs;
+		for (int i = 1; i < 100; i++){								//100 guesses allowed
+			guess = player.makeGuess();								//make a new guess    0251
+			int black = sol.calcBlack(guess);
+			int red = sol.calcRed(guess);
+			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
+			
+			
+			if (sol.checkCorrect(guess)){							//if the guess is correct, end
+				System.out.println("Found solution " + guessToString(guess) + " in " + i + " guesses.");
+				return;
+			}
+			
+			
+			
+		}
 		
-		
+		System.out.println("Did not find solution " + guessToString(sol.getSolution()) + " in allotted time.");
 	}
 	
-	public boolean isTerminal(int[] guess){
-		return false;
-		//check correctness
+	
+	private static String guessToString(int[] guess){
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		
+		for (int i = 0; i < guess.length; i++){
+			sb.append(guess[i]);
+			if (i < guess.length -1){
+				sb.append(" ");
+			}
+		}
+		
+		sb.append("]");
+		return sb.toString();
 	}
-	
-
-	
-	
-	
 	
 }

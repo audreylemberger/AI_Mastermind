@@ -7,7 +7,7 @@
 public class Genetic extends Technique {
 	private static final int POOL_SIZE = 10; //size of the gene pool: number of genomes to keep
 	
-	//priority queue of best breeders?
+	//priority queue of best Genome breeders?
 	
 	
 	/**
@@ -41,16 +41,21 @@ public class Genetic extends Technique {
 	 *
 	 */
 	private static class Genome {
-		int[] guess;
-		int redPegs;
-		//TODO int[NUM_PEGS] whitePegs;
-		//TODO int fitness; //holds fitnessfunction's calculation of total red and white peg value.
+		private int[] guess;
+		private int fitness;		//holds fitnessfunction's calculation of total red and white peg value.
 		
-		private Genome(int[] guess, int redPegs){
+		private Genome(int[] guess, int blackPegs, int redPegs){
 			this.guess = guess;
-			this.redPegs = redPegs;
+			fitness = blackPegs*2 + redPegs;
 		}
 		
+		public int[] getGuess(){
+			return guess;
+		}
+		
+		public int getFitness(){
+			return fitness;
+		}
 		
 	}
 	

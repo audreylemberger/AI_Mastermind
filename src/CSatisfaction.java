@@ -14,7 +14,7 @@ public class CSatisfaction extends Technique {
 	List constraints; //not best data structure for this?...
 	
 	public CSatisfaction(){
-		List[] domains = new List[Mastermind.NUM_PEGS];
+		List[] domains = new List[Solution.NUM_PEGS];
 		//List constraints =
 	}
 	
