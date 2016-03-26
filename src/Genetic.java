@@ -18,10 +18,10 @@ public class Genetic extends Technique {
 	 * assign weight/priority,
 	 * add to queue of best breeders (bad genomes should fall of the end)
 	 */
-	public void update(int blackPegs, int redPegs int[] guess) {
+	public void update(int blackPegs, int redPegs, int[] guess) {
 		Genome evaluatedGuess = new Genome(guess, blackPegs, redPegs);
 		
-		if
+		
 		
 		
 		// TODO Auto-generated method stub
