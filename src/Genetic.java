@@ -1,3 +1,5 @@
+import java.util.PriorityQueue;
+
 /**
  * Genetic Algorithm
  * 
@@ -6,6 +8,7 @@
  */
 public class Genetic extends Technique {
 	private static final int POOL_SIZE = 10; //size of the gene pool: number of genomes to keep
+	private PriorityQueue genePool;
 	
 	//priority queue of best Genome breeders?
 	
@@ -15,7 +18,12 @@ public class Genetic extends Technique {
 	 * assign weight/priority,
 	 * add to queue of best breeders (bad genomes should fall of the end)
 	 */
-	public void update(int redPegs, int[] guess) {
+	public void update(int blackPegs, int redPegs int[] guess) {
+		Genome evaluatedGuess = new Genome(guess, blackPegs, redPegs);
+		
+		if
+		
+		
 		// TODO Auto-generated method stub
 
 	}
@@ -30,9 +38,6 @@ public class Genetic extends Technique {
 	}
 	
 	
-	
-	
-	
 	/**
 	 * holds a genome:
 	 * four peg guesses and the strength of the guess as a whole
@@ -40,7 +45,7 @@ public class Genetic extends Technique {
 	 * @author Nicole
 	 *
 	 */
-	private static class Genome {
+	private static class Genome implements Comparable {
 		private int[] guess;
 		private int fitness;		//holds fitnessfunction's calculation of total red and white peg value.
 		
@@ -55,6 +60,13 @@ public class Genetic extends Technique {
 		
 		public int getFitness(){
 			return fitness;
+		}
+
+		public int compareTo(Object arg) {
+			//TODO fix this
+			return fitness-competitor.getFitness();
+		}
+
 		}
 		
 	}

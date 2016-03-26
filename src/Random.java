@@ -6,13 +6,16 @@
  */
 public class Random extends Technique {
 	
-
-	
+	/**
+	 * the Random class does not learn; update is empty
+	 */
 	public void update(int redPegs, int[] guess) {
-		// TODO Auto-generated method stub
-
+		return;
 	}
 	
+	/**
+	 * create a series of random numbers as a guess
+	 */
 	public int[] makeGuess() {
 		int[] guess = new int[Solution.NUM_PEGS];
 		
