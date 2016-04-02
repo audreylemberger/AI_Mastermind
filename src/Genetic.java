@@ -68,6 +68,13 @@ public class Genetic extends Technique {
 		}
 
 		}
+
+
+	@Override
+	public void update(int redPegs, int[] guess) {
+		// TODO Auto-generated method stub
+		
+	}
 		
 	}
 	

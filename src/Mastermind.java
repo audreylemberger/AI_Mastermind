@@ -6,7 +6,21 @@ public class Mastermind {
 		System.out.println("Welcome to Mastermind!");
 		System.out.println("Program by Nicole Hoffler and Audrey Lemberger");
 		System.out.println("Choose a technique: ....");
-		
+//		//used below code to test number of red and black pegs and both work, feel welcome to test them
+//				//if you want to!
+//				Solution sol = new Solution();
+//				Random player = new Random();
+//				int[] guess;
+//				int[] solution = sol.getSolution();
+//				guess = player.makeGuess();								//make a new guess    0251
+//				int black = sol.calcBlack(guess);
+//				int red = sol.calcRed(guess);
+//				System.out.println("red " +red);
+//				System.out.println("black " +black);
+//				System.out.println("solution");
+//				printGuessSolution(sol.getSolution());
+//				System.out.println("guess");
+//				printGuessSolution(guess);
 		//if(....)
 		playRandom();
 		
@@ -53,5 +67,11 @@ public class Mastermind {
 		sb.append("]");
 		return sb.toString();
 	}
-	
+	//for testing purposes, print out solution or guess to console
+		public static void printGuessSolution(int[] array){
+			for (int i = 0; i < array.length; i++){
+				System.out.print(array[i]);
+			}
+			System.out.println("");
+		}
 }
