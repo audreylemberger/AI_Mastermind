@@ -7,7 +7,8 @@
 public abstract class Technique {
 	
 	//update gene pool or constraints according to technique
-	public abstract void update(int redPegs, int[] guess);
+	public abstract void update(int blackPegs, int redPegs, int[] guess);
+	
 	public int[] randomGuess() {
 		int[] guess = new int[Solution.NUM_PEGS];
 		

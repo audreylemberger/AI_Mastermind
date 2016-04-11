@@ -21,7 +21,7 @@ public class CSatisfaction extends Technique {
 	/**
 	 * function to make new constraints (or domains) out of peg counts!
 	 */
-	public void update(int redPegs, int[] guess) {
+	public void update(int blackPegs, int redPegs, int[] guess) {
 		// TODO Auto-generated method stub
 
 	}

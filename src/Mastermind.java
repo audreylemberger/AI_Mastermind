@@ -30,7 +30,7 @@ public class Mastermind {
 	private static void playRandom(){
 		System.out.println("\nPlaying with technique Random.");
 		Solution sol = new Solution();
-		Random player = new Random();
+		Rando player = new Rando();
 		int[] guess;
 		
 		for (int i = 1; i < 100; i++){								//100 guesses allowed

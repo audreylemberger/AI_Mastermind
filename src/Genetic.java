@@ -1,6 +1,9 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 
 /**
@@ -10,108 +13,115 @@ import java.util.PriorityQueue;
  *
  */
 public class Genetic extends Technique {
-	private static final int POOL_SIZE = 10; //size of the gene pool: number of genomes to keep
-	private PriorityQueue<Genome> genePool = new PriorityQueue<Genome>();
+	private double MUTATION = 50;					// x% chance that there will be mutation
+	private static final int POOL_SIZE = 10;		// size of the gene pool: number of genomes to keep
 	private Solution solution;
 	
-	private int counter =0;
+	private PriorityQueue<Genome> genePool;			// priority queue of best Genome breeders
+	private Iterator kidIterator;						// holds next guesses to offer
+	private int counter = 0;
 	
-	//priority queue of best Genome breeders?
+	
 	
 	public Genetic(Solution solution){
 		this.solution = solution;
+		genePool = new PriorityQueue<Genome>();
 	}
+	
+	
 	/**
 	 * based on the number of pegs a guess receives,
 	 * assign weight/priority,
 	 * add to queue of best breeders (bad genomes should fall of the end)
 	 */
 	public void update(int blackPegs, int redPegs, int[] guess) {
-		Genome evaluatedGuess = new Genome(guess, blackPegs, redPegs);
-		//copied how to use a priority queue here: http://stackoverflow.com/questions/18355932/java-priority-queues-and-comparable-interface
-		//i'm assuming the compareTo method takes care of adding elements in the right
-		//place in the queue(?)
-		genePool.add(evaluatedGuess);
-		
-		//add to priority
-		
-		
-		// TODO Auto-generated method stub
-
+		Genome evaluatedGuess = new Genome(guess, blackPegs, redPegs);		//create genome given pegs
+		genePool.add(evaluatedGuess);										//add genome to priority queue
 	}
 	
+	
 	/**
+	 * Offer up a guess from the 
 	 * if there aren't many good breeders, make random guesses!
 	 * Maybe make many guesses at once- work in generations
 	 */
 	public int[] makeGuess() {
-		// TODO Auto-generated method stub
 		
-		//for 10 making randomGuess()
-		//put in priorityQueue
-		
-		//make 10 kids based off of parents
-		//only go so far into queue
-		//everyone mates with top of priority
-		//dont mate 2nd and 3rd with each other
-		//3 for priority queue
-		if (counter <10){
-			int[] guess = new int[Solution.NUM_PEGS];
-		
-			for (int i = 0; i < Solution.NUM_PEGS; i++){
-				guess[i] = (int) Math.floor(Math.random()*10);
-			}
+		// beginning the game
+		// add randomGuess() genomes to begin the genePool
+		if (genePool.size() < POOL_SIZE){
 			counter++;
-			return guess;
+			return randomGuess();
+		}
+		
+		// or
+		// pick one of kids based off best parents
+		else{
+			return (int[]) kidIterator.next();
+		}
+	}
+	
+	
+	/**
+	 * Make a new bunch of kids to guess
+	 * Put them into the kidIterator
+	 */
+	public void fillIterator(){
+		
+		int [][] kids = new int[POOL_SIZE][Solution.NUM_PEGS];
+		Genome[] temp = (Genome[]) genePool.toArray();
+
+
+
+		// we should talk on how we crossover different genes...
+		//	even-numbered mate with best genome
+		// odd-numbered mate with second-best genome
+		for (int i = 2; i < POOL_SIZE; i++){
+
+			if (i%2 == 0){
+				kids[i] = makeKid(temp[0], temp[i]);
+			}
+			else{
+				kids[i] = makeKid(temp[1], temp[i]);
+			}
+		} 
+
+		kidIterator = Arrays.stream(kids).iterator();
+	}
+	
+	
+	/**
+	 * Take two parents, make a child with mutation
+	 * @param firstParent
+	 * @param secondParent
+	 * @return
+	 */
+	public int[] makeKid(Genome firstParent, Genome secondParent){
+		
+		int[] p1 = firstParent.getGuess();
+		int[] p2 = secondParent.getGuess();
+		int kid[] = new int[Solution.NUM_PEGS];
+		
+		//first half to parent 1
+		//second half to parent 2
+		for (int i = 0; i < Solution.NUM_PEGS; i++){
+			if (i < Solution.NUM_PEGS/2){
+				kid[i] = p1[i];
+			}
+			kid[i] = p2[i];
+		}
+		
+		//add mutation...
+		Random random = new Random();
+		if (random.nextInt(100) < MUTATION){
+			
+			int mutantNumber = (int) Math.floor(Math.random()* 10);
+			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
+			kid[randomPlace] = mutantNumber;
 			
 		}
-		else{
-			//take a random successor from the pool we made, I might
-			//have interpreted this wrong way because I saw that we made a note
-			//that we evalute the fitness of the successors in the makePool method
-			//but how can we evalute fitness if the only way we can is to acutally make a guess?
-			int randomKid = (int) Math.floor(Math.random()*10);
-			Genome[] possibleKids = (Genome[]) makePool().toArray();
-			int[] guess = possibleKids[randomKid].getGuess();
-			return guess;
-		}
-	}
-	
-	
-	public List<Genome> makePool(){
-		
-		 List<Genome> kids = new ArrayList<Genome>();
-		 Genome[] temp = (Genome[]) genePool.toArray();
-		 // tenth of a chance that there will be mutation
-		 // didn't have time to figure out how to incoporate this
-		 int mutateChance = (int) Math.floor(Math.random()*10);
-		 //update, test all of them for fitness
-		 for (int i = 0; i < 10; i++){
-			 //used the mod to just make 5 kids through mating with 1st and 2nd genome in queue
-			 // and 5 kids mating with 1st and 3rd genome
-			 // took half of 1st parent from priority queue and second half to whoever is mating with it
-			 // we should talk on how we crossover different genes, I was just going with intuition 
-			 
-			 if (i%2 == 0){
-				 int[] kid = {temp[0].getGuess()[0], temp[0].getGuess()[1], temp[1].getGuess()[2], temp[1].getGuess()[3] };
-				 Genome add = new Genome(kid, 0, 0);
-				 kids.add(add);
-			 }
-			 else{
-				 int[] kid = {temp[0].getGuess()[0], temp[0].getGuess()[1], temp[2].getGuess()[2], temp[2].getGuess()[3] };
-				 Genome add = new Genome(kid, 0, 0); 
-				 kids.add(add);
-			 }
-		 }
-		 return kids;
-	}
-	
-	public int[] makeMutantSuccessor(Genome firstParent, Genome secondParent){
-		int[] mutant = {firstParent.getGuess()[0], firstParent.getGuess()[1], secondParent.getGuess()[2], secondParent.getGuess()[3] };
-		int mutantNumber =(int) Math.floor(Math.random()*10);
-		int randomPlace = (int) Math.floor(Math.random()*3);
-		mutant[randomPlace] = mutantNumber;
-		return mutant;
+
+		return kid;
 	}
 	
 	
@@ -143,26 +153,13 @@ public class Genetic extends Technique {
 		}
 
 		public int compareTo(Genome arg) {
-		
 			if (this.getFitness() < ((Genome) arg).getFitness()){
 				return -1;
-			}
-			else{
+			}else{
 				return 1;
 			}
-			
 		}
-
-		
-
-		}
-
-	@Override
-	public void update(int redPegs, int[] guess) {
-		// TODO Auto-generated method stub
-		
 	}
-	
 		
 }
 	
