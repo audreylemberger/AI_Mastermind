@@ -1,9 +1,6 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.util.Stack;
 
 
 /**
@@ -13,20 +10,12 @@ import java.util.Random;
  *
  */
 public class Genetic extends Technique {
-	private double MUTATION = 50;					// x% chance that there will be mutation
-	private static final int POOL_SIZE = 10;		// size of the gene pool: number of genomes to keep
-	private Solution solution;
+	private double MUTATION = 50;											// x% chance that there will be mutation
+	private static final int POOL_SIZE = 10;								// size of the gene pool: number of genomes to keep
 	
-	private PriorityQueue<Genome> genePool;			// priority queue of best Genome breeders
-	private Iterator kidIterator;						// holds next guesses to offer
-	private int counter = 0;
+	private PriorityQueue<Genome> genePool = new PriorityQueue<Genome>();	// priority queue of best Genome breeders
+	private Stack<int[]> kidStack = new Stack<int[]>();						// holds next guesses to offer
 	
-	
-	
-	public Genetic(Solution solution){
-		this.solution = solution;
-		genePool = new PriorityQueue<Genome>();
-	}
 	
 	
 	/**
@@ -37,6 +26,7 @@ public class Genetic extends Technique {
 	public void update(int blackPegs, int redPegs, int[] guess) {
 		Genome evaluatedGuess = new Genome(guess, blackPegs, redPegs);		//create genome given pegs
 		genePool.add(evaluatedGuess);										//add genome to priority queue
+		//printGenes();
 	}
 	
 	
@@ -50,43 +40,61 @@ public class Genetic extends Technique {
 		// beginning the game
 		// add randomGuess() genomes to begin the genePool
 		if (genePool.size() < POOL_SIZE){
-			counter++;
 			return randomGuess();
 		}
 		
 		// or
 		// pick one of kids based off best parents
 		else{
-			return (int[]) kidIterator.next();
+			if (kidStack.empty()) fillStack();
+			return kidStack.pop();
 		}
 	}
 	
 	
 	/**
 	 * Make a new bunch of kids to guess
-	 * Put them into the kidIterator
+	 * Put them into the kidStack
 	 */
-	public void fillIterator(){
+	public void fillStack(){
+		System.out.println("filling in kids...");
+		kidStack = new Stack<int[]>();
+		Genome[] temp = genePool.toArray(new Genome[genePool.size()]);
+		//printGenes();
 		
-		int [][] kids = new int[POOL_SIZE][Solution.NUM_PEGS];
-		Genome[] temp = (Genome[]) genePool.toArray();
-
-
-
 		// we should talk on how we crossover different genes...
 		//	even-numbered mate with best genome
 		// odd-numbered mate with second-best genome
 		for (int i = 2; i < POOL_SIZE; i++){
 
 			if (i%2 == 0){
-				kids[i] = makeKid(temp[0], temp[i]);
+				//System.out.print("kid [0][" + i + "]: ");
+				kidStack.push(makeKid(temp[0], temp[i]));
 			}
 			else{
-				kids[i] = makeKid(temp[1], temp[i]);
+				//System.out.print("kid [1][" + i + "]: ");
+				kidStack.push(makeKid(temp[1], temp[i]));
 			}
 		} 
-
-		kidIterator = Arrays.stream(kids).iterator();
+	}
+	
+	
+	public void printGenes(){
+		Genome[] temp = genePool.toArray(new Genome[genePool.size()]);
+		System.out.println("Gene Pool: ");
+		
+		for (int i = 0; i < temp.length; i++){
+			Genome g = genePool.poll();
+			int[] p = g.getGuess();
+			System.out.println("P" + ": " + p[0] + " " + p[1] + " " + p[2] + " " + p[3] + "\t\t fitness: " + g.getFitness() );
+			temp[i] = g;
+		}
+		
+		for (int i = 0; i < temp.length; i++){
+			genePool.add(temp[i]);
+		}
+		
+		System.out.println("end gene pool.\n");
 	}
 	
 	
@@ -107,8 +115,9 @@ public class Genetic extends Technique {
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
 			if (i < Solution.NUM_PEGS/2){
 				kid[i] = p1[i];
+			}else{
+				kid[i] = p2[i];
 			}
-			kid[i] = p2[i];
 		}
 		
 		//add mutation...
@@ -120,7 +129,10 @@ public class Genetic extends Technique {
 			kid[randomPlace] = mutantNumber;
 			
 		}
-
+		
+		//System.out.println(kid[0] + " " + kid[1] + " " + kid[2] + " " + kid[3]);
+		//System.out.println(p1[0] + " " + p1[1] + " " + p1[2] + " " + p1[3]);
+		//System.out.println(p2[0] + " " + p2[1] + " " + p2[2] + " " + p2[3]);
 		return kid;
 	}
 	
@@ -153,11 +165,7 @@ public class Genetic extends Technique {
 		}
 
 		public int compareTo(Genome arg) {
-			if (this.getFitness() < ((Genome) arg).getFitness()){
-				return -1;
-			}else{
-				return 1;
-			}
+			return arg.fitness-fitness;
 		}
 	}
 		
