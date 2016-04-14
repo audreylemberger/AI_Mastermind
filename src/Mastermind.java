@@ -23,7 +23,7 @@ public class Mastermind {
 		Genetic player = new Genetic();
 		int[] guess;
 
-		for (int i = 1; i < 20; i++){								//100 guesses allowed
+		for (int i = 1; i < 300; i++){								//100 guesses allowed
 			guess = player.makeGuess();								//make a new guess    0251
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
