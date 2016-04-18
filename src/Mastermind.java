@@ -21,10 +21,11 @@ public class Mastermind {
 		System.out.println("\nPlaying with Genetic Algorithm.");
 		Solution sol = new Solution();
 		Genetic player = new Genetic();
-		int[] guess;
+		int[] guess = {-1, -1, -1, -1};
+		int numGuesses = 0;
 
-		for (int i = 1; i < 300; i++){								//100 guesses allowed
-			guess = player.makeGuess();								//make a new guess    0251
+		while (!sol.checkCorrect(guess)){							//play until we find the answer
+			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
 			player.update(black, red, guess);
@@ -32,14 +33,13 @@ public class Mastermind {
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
 
 			if (sol.checkCorrect(guess)){							//if the guess is correct, end
-				System.out.println("Found solution " + guessToString(guess) + " in " + i + " guesses.");
+				System.out.println("Found solution " + guessToString(guess) + " in " + numGuesses + " guesses.");
 				return;
 			}
 		}
-
-		System.out.println("Did not find solution " + guessToString(sol.getSolution()) + " in allotted time.");
 	}
 
+	
 	private static void playRandom(){
 		System.out.println("\nPlaying with technique Random.");
 		Solution sol = new Solution();

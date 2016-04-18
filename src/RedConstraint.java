@@ -1,12 +1,16 @@
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Constraints dealing with Red Pegs
+ * @author Audrey
+ *
+ */
 public class RedConstraint extends Constraint{
-	
-	
 	int[] recordedGuess;
-	int numPegs;
+	int numPegs;								//number of red pages recordedGuess received
 	Map<Integer, Integer> keepTrack;
+	
 	
 	public RedConstraint(int[] recordedGuess, int numPegs) {
 		super(recordedGuess, numPegs);
@@ -14,7 +18,7 @@ public class RedConstraint extends Constraint{
 		//similar with how i calculated number of red pegs
 		//used a map to keep track of how many instances I see the number in the guess
 		
-		for (int i = 0; i <recordedGuess.length; i++){
+		for (int i = 0; i < recordedGuess.length; i++){
 			if (!keepTrack.containsKey(recordedGuess[i])){
 				keepTrack.put(recordedGuess[i], 1);
 			}
@@ -26,8 +30,8 @@ public class RedConstraint extends Constraint{
 
 	@Override
 	public boolean validate(Integer[] guess) {
-		// TODO Auto-generated method stub
 		int keepTrackOfRed = 0;
+		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
 			
 			//skip over when both guesses have same slot so don't mess up hashmap
@@ -39,11 +43,13 @@ public class RedConstraint extends Constraint{
 					if (keepTrack.get(guess[i]) > 0){
 					keepTrack.put(guess[i], keepTrack.get(guess[i] -1));
 					keepTrackOfRed++;
+					//TODO re-find keeptrack?
 					}
 				}
 			}
 			
 		}
+		
 		//if number of red pegs from guess is not equal to new guess, not correct or not accurate enough guess
 		if (keepTrackOfRed != numPegs){
 			return false;
