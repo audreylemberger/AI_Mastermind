@@ -19,7 +19,7 @@ public class BlackConstraint extends Constraint {
 	 * 
 	 */
 	@Override
-	public boolean validate(Integer[] guess) {
+	public boolean validate(int[] guess) {
 		int keepTrackOfBlack = 0;
 		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){

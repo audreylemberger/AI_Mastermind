@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +36,7 @@ public class CSatisfaction extends Technique {
 	 * function to make new constraints (or domains) out of peg counts!
 	 */
 	public void update(int blackPegs, int redPegs, int[] guess) {
-		
-		//turn guess into string and put in a hashmap to keep track of previous guesses
-		String putInPrevious = "";
-		for (int i = 0; i < Solution.NUM_PEGS; i++){
-			putInPrevious = putInPrevious + guess[i];
-		}
-		previousGuesses.put(putInPrevious, true);
-		
-		
+
 		if (redPegs != 0){										// if there are red Pegs, make a red constraint
 			RedConstraint evaluatedRed = new RedConstraint(guess, redPegs);
 			constraints.add(evaluatedRed);
@@ -83,17 +76,52 @@ public class CSatisfaction extends Technique {
 		}
 		
 		// generate a guess using (hopefully) slimmed down domains
-		else{
-			int[] generatedGuess = new int[Solution.NUM_PEGS];
-			for (int i = 0; i< Solution.NUM_PEGS; i++){
-				//get size of that list of domains for that particular slot and 
-				//pick a random number in that domain
-					int randomDomainNum = (int) Math.floor(Math.random()*domains[i].size());
-					generatedGuess[i] = domains[i].get(randomDomainNum);
+		else{		
+			int[] generatedGuess = null;
+			while(generatedGuess == null){
+				generatedGuess = checkPrev();
 			}
-			
 			return generatedGuess;
 		}
 	}
+	
+	private int[] checkPrev(){
+		//generate guess
+		int[] generatedGuess = new int[Solution.NUM_PEGS];
+		for (int i = 0; i< Solution.NUM_PEGS; i++){
+			//get size of that list of domains for that particular slot and 
+			//pick a random number in that domain
+				int randomDomainNum = (int) Math.floor(Math.random()*domains[i].size());
+				generatedGuess[i] = domains[i].get(randomDomainNum);
+		}
+		
+		//check!
+		if (previousGuesses.containsKey(guessToString(generatedGuess))){
+			return null;
+		}
+		
+		//turn guess into string and put in a hashmap to keep track of previous guesses
+		previousGuesses.put(guessToString(generatedGuess), true);
+		
+		//check guess against constraints!
+		Iterator<Constraint> iter = constraints.iterator();
+		while(iter.hasNext()){
+			Constraint test = iter.next();
+			if (!test.validate(generatedGuess)){
+				return null;
+			}
+		}
+		
+		return generatedGuess;
+	}
+	
+	private String guessToString(int[] guess){
+		String putInPrevious = "";
+		for (int i = 0; i < Solution.NUM_PEGS; i++){
+			putInPrevious = putInPrevious + guess[i];
+		}
+		return putInPrevious;
+	}
+	
 
 }

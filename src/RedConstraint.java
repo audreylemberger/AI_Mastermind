@@ -29,7 +29,7 @@ public class RedConstraint extends Constraint{
 	}
 
 	@Override
-	public boolean validate(Integer[] guess) {
+	public boolean validate(int[] guess) {
 		int keepTrackOfRed = 0;
 		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
