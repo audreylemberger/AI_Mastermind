@@ -11,11 +11,38 @@ public class Mastermind {
 
 		//testPegs();			//test red and black pegs are working
 		
-		//playRandom();
+		playRandom();
 		
-		playGenetic();
+		//playGenetic();
+		
+		//playCSP();
 
 	}
+	
+	
+	private static void playCSP(){
+		System.out.println("\nPlaying with Constraint Satisfaction.");
+		Solution sol = new Solution();
+		CSatisfaction player = new CSatisfaction();
+		int[] guess = {-1, -1, -1, -1};
+		int numGuesses = 0;
+
+		while (!sol.checkCorrect(guess)){							//play until we find the answer
+			guess = player.makeGuess();
+			int black = sol.calcBlack(guess);
+			int red = sol.calcRed(guess);
+			numGuesses++;
+			player.update(black, red, guess);
+			
+			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
+
+			if (sol.checkCorrect(guess)){							//if the guess is correct, end
+				System.out.println("Found solution " + guessToString(guess) + " in " + numGuesses + " guesses.");
+				return;
+			}
+		}
+	}
+	
 
 	private static void playGenetic(){
 		System.out.println("\nPlaying with Genetic Algorithm.");
@@ -28,6 +55,7 @@ public class Mastermind {
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
+			numGuesses++;
 			player.update(black, red, guess);
 			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
@@ -44,16 +72,19 @@ public class Mastermind {
 		System.out.println("\nPlaying with technique Random.");
 		Solution sol = new Solution();
 		Rando player = new Rando();
-		int[] guess;
+		int[] guess = {-1, -1, -1, -1};
+		int numGuesses = 0;
 
-		for (int i = 1; i < 100; i++){								//100 guesses allowed
+		while (!sol.checkCorrect(guess)){							//play until we find the answer
 			guess = player.makeGuess();								//make a new guess    0251
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
+			numGuesses++;
+			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
 
 			if (sol.checkCorrect(guess)){							//if the guess is correct, end
-				System.out.println("Found solution " + guessToString(guess) + " in " + i + " guesses.");
+				System.out.println("Found solution " + guessToString(guess) + " in " + numGuesses + " guesses.");
 				return;
 			}
 		}
