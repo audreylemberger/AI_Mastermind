@@ -71,7 +71,9 @@ public class CSatisfaction extends Technique {
 	 */
 	public int[] makeGuess() {
 		//use random guesses for the first 10 guesses
-		if (previousGuesses.size() < 10){
+		if (previousGuesses.isEmpty() ){
+			int[] guess = randomGuess();
+			previousGuesses.put(guessToString(guess), true);
 			return randomGuess();
 		}
 		
