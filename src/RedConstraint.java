@@ -15,8 +15,15 @@ public class RedConstraint extends Constraint{
 	public RedConstraint(int[] recordedGuess, int numPegs) {
 		super(recordedGuess, numPegs);
 		Map<Integer, Integer> keepTrack = new HashMap<Integer, Integer>();
-		//similar with how i calculated number of red pegs
-		//used a map to keep track of how many instances I see the number in the guess
+		
+	}
+	
+	/**
+	 * similar with how i calculated number of red pegs
+	 * used a map to keep track of how many instances I see the number in the guess
+	 */
+	private void refreshMap(){
+		keepTrack.clear();
 		
 		for (int i = 0; i < recordedGuess.length; i++){
 			if (!keepTrack.containsKey(recordedGuess[i])){
@@ -31,6 +38,7 @@ public class RedConstraint extends Constraint{
 	@Override
 	public boolean validate(int[] guess) {
 		int keepTrackOfRed = 0;
+		refreshMap();
 		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
 			
