@@ -4,12 +4,12 @@
  *
  */
 public class BlackConstraint extends Constraint {
-	int[] recordedGuess;
-	int numPegs;						//number of black pages recordedGuess received
-	
+	private int[] recordedGuess;
+	private int numPegs;
 	
 	public BlackConstraint(int[] recordedGuess, int numPegs) {
-		super(recordedGuess, numPegs);
+		this.recordedGuess = recordedGuess;
+		this.numPegs = numPegs;
 		
 	}
 

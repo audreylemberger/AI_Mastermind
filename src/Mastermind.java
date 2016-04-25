@@ -11,11 +11,11 @@ public class Mastermind {
 
 		//testPegs();			//test red and black pegs are working
 		
-		playRandom();
+		//playRandom();
 		
 		//playGenetic();
 		
-		//playCSP();
+		playCSP();
 
 	}
 	
@@ -26,7 +26,9 @@ public class Mastermind {
 		CSatisfaction player = new CSatisfaction();
 		int[] guess = {-1, -1, -1, -1};
 		int numGuesses = 0;
-
+		
+		
+		
 		while (!sol.checkCorrect(guess)){							//play until we find the answer
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
@@ -50,7 +52,7 @@ public class Mastermind {
 		Genetic player = new Genetic();
 		int[] guess = {-1, -1, -1, -1};
 		int numGuesses = 0;
-
+		
 		while (!sol.checkCorrect(guess)){							//play until we find the answer
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
