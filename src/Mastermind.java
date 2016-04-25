@@ -1,4 +1,4 @@
-
+//testing if this works hopefully if i doesnt i will pull out my hair and leave this school forEVERRRR
 public class Mastermind {
 
 
