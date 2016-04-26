@@ -1,4 +1,8 @@
-//testing if this works hopefully if i doesnt i will pull out my hair and leave this school forEVERRRR
+/**
+ * Main class
+ * @author Nicole & Audrey
+ *
+ */
 public class Mastermind {
 
 
@@ -13,9 +17,9 @@ public class Mastermind {
 		
 		//playRandom();
 		
-		//playGenetic();
+		playGenetic();
 		
-		playCSP();
+		//playCSP();
 
 	}
 	
@@ -50,11 +54,14 @@ public class Mastermind {
 	private static void playGenetic(){
 		System.out.println("\nPlaying with Genetic Algorithm.");
 		Solution sol = new Solution();
+		int[] solution = sol.getSolution();
+		
 		Genetic player = new Genetic();
 		int[] guess = {-1, -1, -1, -1};
 		int numGuesses = 0;
 		
 		while (!sol.checkCorrect(guess)){							//play until we find the answer
+			System.out.println("\t\t\t\t\t\t\t\t\t\t\t(solution " + solution[0] + solution[1]+ solution[2] + solution[3]);
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);

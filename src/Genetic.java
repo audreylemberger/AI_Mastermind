@@ -10,7 +10,7 @@ import java.util.Stack;
  *
  */
 public class Genetic extends Technique {
-	private double MUTATION = 50;											// x% chance that there will be mutation
+	private double MUTATION = 100;											// x% chance that there will be mutation
 	private static final int POOL_SIZE = 10;								// size of the gene pool: number of genomes to keep
 	
 	private PriorityQueue<Genome> genePool = new PriorityQueue<Genome>();	// priority queue of best Genome breeders
