@@ -66,6 +66,8 @@ public class Mastermind {
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
 			numGuesses++;
+			
+			
 			player.update(black, red, guess);
 			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );

@@ -50,10 +50,10 @@ public class Genetic extends Technique {
 			if (kidStack.empty()) {
 				fillStack();
 			}
-			System.out.println("size of genepool " +genePool.size());
-			System.out.println("best fit " + genePool.peek().getGuess()[0] + genePool.peek().getGuess()[1] +
-					genePool.peek().getGuess()[2] + genePool.peek().getGuess()[3]);
-			System.out.println("kidStack first one " +kidStack.peek()[0] + kidStack.peek()[1] + kidStack.peek()[2] + kidStack.peek()[3]);
+			//System.out.println("size of genepool " +genePool.size());
+			//System.out.println("best fit " + genePool.peek().getGuess()[0] + genePool.peek().getGuess()[1] +
+			//		genePool.peek().getGuess()[2] + genePool.peek().getGuess()[3]);
+			//System.out.println("kidStack first one " +kidStack.peek()[0] + kidStack.peek()[1] + kidStack.peek()[2] + kidStack.peek()[3]);
 			return kidStack.pop();
 		}
 		
@@ -70,11 +70,18 @@ public class Genetic extends Technique {
 		Genome[] temp = genePool.toArray(new Genome[genePool.size()]);
 		System.out.println("1st in PQ " +temp[0].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
 		System.out.println("fitness " + temp[0].getFitness());
+		System.out.println("black pegs " + temp[0].getBlackPegs());
+		System.out.println("real black pegs " );
+		System.out.println("red pegs " + temp[0].getRedPegs());
 		System.out.println("2nd in PQ " +temp[1].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
 		System.out.println("fitness " + temp[1].getFitness());
+		System.out.println("black pegs " + temp[1].getBlackPegs());
+		System.out.println("red pegs " + temp[1].getRedPegs());
 		System.out.println("3rd in PQ " +temp[2].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
 		System.out.println("fitness " + temp[2].getFitness());
-		//printGenes();
+		System.out.println("black pegs " + temp[2].getBlackPegs());
+		System.out.println("red pegs " + temp[2].getRedPegs());
+		printGenes();
 		
 		// we should talk on how we crossover different genes...
 		//	even-numbered mate with best genome
@@ -126,15 +133,13 @@ public class Genetic extends Technique {
 		
 		//first half to parent 1
 		//second half to parent 2
-		if (genePool.size() > 500){
-			for (int i = 0; i < Solution.NUM_PEGS; i++){
-				if (i < Solution.NUM_PEGS/2){
-					kid[i] = p1[i];
-				}else{
-					kid[i] = p2[i];
-				}
-			}
-		}
+//		if (geneToString(p1).equals(geneToString(p2))){
+//			int mutantNumber = (int) Math.floor(Math.random()* 10);
+//			//System.out.println("mutant number " + mutantNumber);
+//			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
+//			p1[randomPlace] = mutantNumber;
+//		}
+		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
 			if (i < Solution.NUM_PEGS/2){
 				kid[i] = p1[i];
@@ -143,20 +148,21 @@ public class Genetic extends Technique {
 			}
 		}
 		
+		
 		//add mutation...
 		Random random = new Random();
 		int tempRan=random.nextInt(10);
-		System.out.println("random mutation " +tempRan);
+		//System.out.println("random mutation " +tempRan);
 		if (tempRan < MUTATION){
 			
-			System.out.println("kid before mutation " +kid[0] + kid[1] + kid[2] + kid[3]);
+			//System.out.println("kid before mutation " +kid[0] + kid[1] + kid[2] + kid[3]);
 			int mutantNumber = (int) Math.floor(Math.random()* 10);
 			//System.out.println("mutant number " + mutantNumber);
 			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
 			//System.out.println("random place " + randomPlace);
 			kid[randomPlace] = mutantNumber;
 			
-			System.out.println("kid mutated " +kid[0] + kid[1] + kid[2] + kid[3]);
+			//System.out.println("kid mutated " +kid[0] + kid[1] + kid[2] + kid[3]);
 			
 			
 		}
@@ -168,7 +174,13 @@ public class Genetic extends Technique {
 	}
 	
 	
-	
+	private String geneToString(int[] gene){
+		String stringGene = "";
+		for(int i = 0; i < gene.length; i++){
+			stringGene = stringGene + gene[i];
+		}
+		return stringGene;
+	}
 	
 	/**
 	 * holds a genome:
@@ -180,11 +192,22 @@ public class Genetic extends Technique {
 	
 	private static class Genome implements Comparable<Genome> {
 		private int[] guess;
+		private int blackPegs;
+		private int redPegs;
 		private int fitness;		//holds fitnessfunction's calculation of total red and white peg value.
 		
 		private Genome(int[] guess, int blackPegs, int redPegs){
 			this.guess = guess;
+			this.blackPegs = blackPegs;
+			this.redPegs = redPegs;
 			fitness = blackPegs*2 + redPegs;
+		}
+		public int getBlackPegs(){
+			return blackPegs;
+		}
+		
+		public int getRedPegs(){
+			return redPegs;
 		}
 		
 		public int[] getGuess(){
