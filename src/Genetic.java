@@ -37,6 +37,7 @@ public class Genetic extends Technique {
 	 */
 	public int[] makeGuess() {
 		
+	
 		// beginning the game
 		// add randomGuess() genomes to begin the genePool
 		if (genePool.size() < POOL_SIZE){
@@ -46,9 +47,16 @@ public class Genetic extends Technique {
 		// or
 		// pick one of kids based off best parents
 		else{
-			if (kidStack.empty()) fillStack();
+			if (kidStack.empty()) {
+				fillStack();
+			}
+			System.out.println("size of genepool " +genePool.size());
+			System.out.println("best fit " + genePool.peek().getGuess()[0] + genePool.peek().getGuess()[1] +
+					genePool.peek().getGuess()[2] + genePool.peek().getGuess()[3]);
+			System.out.println("kidStack first one " +kidStack.peek()[0] + kidStack.peek()[1] + kidStack.peek()[2] + kidStack.peek()[3]);
 			return kidStack.pop();
 		}
+		
 	}
 	
 	
@@ -60,6 +68,12 @@ public class Genetic extends Technique {
 		System.out.println("filling in kids...");
 		kidStack = new Stack<int[]>();
 		Genome[] temp = genePool.toArray(new Genome[genePool.size()]);
+		System.out.println("1st in PQ " +temp[0].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
+		System.out.println("fitness " + temp[0].getFitness());
+		System.out.println("2nd in PQ " +temp[1].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
+		System.out.println("fitness " + temp[1].getFitness());
+		System.out.println("3rd in PQ " +temp[2].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
+		System.out.println("fitness " + temp[2].getFitness());
 		//printGenes();
 		
 		// we should talk on how we crossover different genes...
@@ -112,6 +126,15 @@ public class Genetic extends Technique {
 		
 		//first half to parent 1
 		//second half to parent 2
+		if (genePool.size() > 500){
+			for (int i = 0; i < Solution.NUM_PEGS; i++){
+				if (i < Solution.NUM_PEGS/2){
+					kid[i] = p1[i];
+				}else{
+					kid[i] = p2[i];
+				}
+			}
+		}
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
 			if (i < Solution.NUM_PEGS/2){
 				kid[i] = p1[i];
@@ -122,11 +145,19 @@ public class Genetic extends Technique {
 		
 		//add mutation...
 		Random random = new Random();
-		if (random.nextInt(100) < MUTATION){
+		int tempRan=random.nextInt(10);
+		System.out.println("random mutation " +tempRan);
+		if (tempRan < MUTATION){
 			
+			System.out.println("kid before mutation " +kid[0] + kid[1] + kid[2] + kid[3]);
 			int mutantNumber = (int) Math.floor(Math.random()* 10);
+			//System.out.println("mutant number " + mutantNumber);
 			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
+			//System.out.println("random place " + randomPlace);
 			kid[randomPlace] = mutantNumber;
+			
+			System.out.println("kid mutated " +kid[0] + kid[1] + kid[2] + kid[3]);
+			
 			
 		}
 		

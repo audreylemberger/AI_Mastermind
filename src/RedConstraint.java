@@ -74,7 +74,7 @@ public class RedConstraint extends Constraint{
 		}
 		
 		//if number of red pegs from guess is not equal to new guess, not correct or not accurate enough guess
-		if (keepTrackOfRed != numPegs){
+		if (keepTrackOfRed < numPegs){
 			
 			return false;
 		}
