@@ -23,6 +23,7 @@ public class Mastermind {
 	private static void playCSP(){
 		System.out.println("\nPlaying with Constraint Satisfaction.");
 		Solution sol = new Solution();
+		System.out.println(guessToString(sol.getSolution()));
 		CSatisfaction player = new CSatisfaction();
 		int[] guess = {-1, -1, -1, -1};
 		int numGuesses = 0;
