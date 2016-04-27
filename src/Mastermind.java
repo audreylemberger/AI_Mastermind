@@ -61,6 +61,10 @@ public class Mastermind {
 		int numGuesses = 0;
 		
 		while (!sol.checkCorrect(guess)){							//play until we find the answer
+			if (player.getGenePoolSize() == 1000){
+				System.out.println("Genetic Algorithms failed");
+				return;
+			}
 			System.out.println("\t\t\t\t\t\t\t\t\t\t\t(solution " + solution[0] + solution[1]+ solution[2] + solution[3]);
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);

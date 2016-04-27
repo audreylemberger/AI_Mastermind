@@ -69,16 +69,17 @@ public class Genetic extends Technique {
 		kidStack = new Stack<int[]>();
 		//the problem was this/had genePool.size but should be genePool.size - 1
 		Genome[] temp = genePool.toArray(new Genome[genePool.size() -1]);
-		System.out.println("1st in PQ " +temp[0].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
+		System.out.println("1st in PQ " +temp[0].guess[0] + temp[0].guess[1] + temp[0].guess[2] + temp[0].guess[3]);
 		System.out.println("fitness " + temp[0].getFitness());
 		System.out.println("black pegs " + temp[0].getBlackPegs());
-		System.out.println("real black pegs " );
 		System.out.println("red pegs " + temp[0].getRedPegs());
+		
 		System.out.println("2nd in PQ " +temp[1].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
 		System.out.println("fitness " + temp[1].getFitness());
 		System.out.println("black pegs " + temp[1].getBlackPegs());
 		System.out.println("red pegs " + temp[1].getRedPegs());
-		System.out.println("3rd in PQ " +temp[2].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
+		
+		System.out.println("3rd in PQ " +temp[2].guess[0] + temp[2].guess[1] + temp[2].guess[2] + temp[2].guess[3]);
 		System.out.println("fitness " + temp[2].getFitness());
 		System.out.println("black pegs " + temp[2].getBlackPegs());
 		System.out.println("red pegs " + temp[2].getRedPegs());
@@ -134,12 +135,15 @@ public class Genetic extends Technique {
 		
 		//first half to parent 1
 		//second half to parent 2
-//		if (geneToString(p1).equals(geneToString(p2))){
-//			int mutantNumber = (int) Math.floor(Math.random()* 10);
-//			//System.out.println("mutant number " + mutantNumber);
-//			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
-//			p1[randomPlace] = mutantNumber;
-//		}
+		System.out.println("PARENT 1 " +geneToString(p1));
+		System.out.println("PARENT 2 " +geneToString(p2));
+		if (geneToString(p1).equals(geneToString(p2))){
+			System.out.println("INCEST");
+			int mutantNumber = (int) Math.floor(Math.random()* 10);
+			//System.out.println("mutant number " + mutantNumber);
+			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
+			p1[randomPlace] = mutantNumber;
+		}
 		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
 			if (i < Solution.NUM_PEGS/2){
@@ -181,6 +185,10 @@ public class Genetic extends Technique {
 			stringGene = stringGene + gene[i];
 		}
 		return stringGene;
+	}
+	
+	public int getGenePoolSize(){
+		return genePool.size();
 	}
 	
 	/**
