@@ -67,7 +67,8 @@ public class Genetic extends Technique {
 	public void fillStack(){
 		System.out.println("filling in kids...");
 		kidStack = new Stack<int[]>();
-		Genome[] temp = genePool.toArray(new Genome[genePool.size()]);
+		//the problem was this/had genePool.size but should be genePool.size - 1
+		Genome[] temp = genePool.toArray(new Genome[genePool.size() -1]);
 		System.out.println("1st in PQ " +temp[0].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
 		System.out.println("fitness " + temp[0].getFitness());
 		System.out.println("black pegs " + temp[0].getBlackPegs());
