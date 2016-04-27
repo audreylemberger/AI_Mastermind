@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Stack;
@@ -14,7 +19,8 @@ public class Genetic extends Technique {
 	private static final int POOL_SIZE = 10;								// size of the gene pool: number of genomes to keep
 	
 	private PriorityQueue<Genome> genePool = new PriorityQueue<Genome>();	// priority queue of best Genome breeders
-	private Stack<int[]> kidStack = new Stack<int[]>();						// holds next guesses to offer
+	private Stack<int[]> kidStack = new Stack<int[]>();	
+	int average;// holds next guesses to offer
 	
 	
 	
@@ -27,7 +33,15 @@ public class Genetic extends Technique {
 		Genome evaluatedGuess = new Genome(guess, blackPegs, redPegs);		//create genome given pegs
 		genePool.add(evaluatedGuess);										//add genome to priority queue
 		//printGenes();
+		//average fitness per generation
+		
+		
+		
+		
+		//writeStats(numGeneration, average);
 	}
+	
+	
 	
 	
 	/**
@@ -67,23 +81,23 @@ public class Genetic extends Technique {
 	public void fillStack(){
 		System.out.println("filling in kids...");
 		kidStack = new Stack<int[]>();
-		//the problem was this/had genePool.size but should be genePool.size - 1
+		
 		Genome[] temp = genePool.toArray(new Genome[genePool.size() -1]);
-		System.out.println("1st in PQ " +temp[0].guess[0] + temp[0].guess[1] + temp[0].guess[2] + temp[0].guess[3]);
-		System.out.println("fitness " + temp[0].getFitness());
-		System.out.println("black pegs " + temp[0].getBlackPegs());
-		System.out.println("red pegs " + temp[0].getRedPegs());
-		
-		System.out.println("2nd in PQ " +temp[1].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
-		System.out.println("fitness " + temp[1].getFitness());
-		System.out.println("black pegs " + temp[1].getBlackPegs());
-		System.out.println("red pegs " + temp[1].getRedPegs());
-		
-		System.out.println("3rd in PQ " +temp[2].guess[0] + temp[2].guess[1] + temp[2].guess[2] + temp[2].guess[3]);
-		System.out.println("fitness " + temp[2].getFitness());
-		System.out.println("black pegs " + temp[2].getBlackPegs());
-		System.out.println("red pegs " + temp[2].getRedPegs());
-		printGenes();
+//		System.out.println("1st in PQ " +temp[0].guess[0] + temp[0].guess[1] + temp[0].guess[2] + temp[0].guess[3]);
+//		System.out.println("fitness " + temp[0].getFitness());
+//		System.out.println("black pegs " + temp[0].getBlackPegs());
+//		System.out.println("red pegs " + temp[0].getRedPegs());
+//		
+//		System.out.println("2nd in PQ " +temp[1].guess[0] + temp[1].guess[1] + temp[1].guess[2] + temp[1].guess[3]);
+//		System.out.println("fitness " + temp[1].getFitness());
+//		System.out.println("black pegs " + temp[1].getBlackPegs());
+//		System.out.println("red pegs " + temp[1].getRedPegs());
+//		
+//		System.out.println("3rd in PQ " +temp[2].guess[0] + temp[2].guess[1] + temp[2].guess[2] + temp[2].guess[3]);
+//		System.out.println("fitness " + temp[2].getFitness());
+//		System.out.println("black pegs " + temp[2].getBlackPegs());
+//		System.out.println("red pegs " + temp[2].getRedPegs());
+//		printGenes();
 		
 		// we should talk on how we crossover different genes...
 		//	even-numbered mate with best genome
@@ -172,12 +186,19 @@ public class Genetic extends Technique {
 			
 		}
 		
-		//System.out.println(kid[0] + " " + kid[1] + " " + kid[2] + " " + kid[3]);
-		//System.out.println(p1[0] + " " + p1[1] + " " + p1[2] + " " + p1[3]);
-		//System.out.println(p2[0] + " " + p2[1] + " " + p2[2] + " " + p2[3]);
+		
 		return kid;
 	}
 	
+	public double getAverage(){
+		Genome[] temp = genePool.toArray(new Genome[genePool.size()]);
+		double average = 0;
+		for (int i = 0; i < genePool.size();i++){
+			average = average + temp[i].getFitness();
+		}
+		average = average/genePool.size();
+		return average;
+	}
 	
 	private String geneToString(int[] gene){
 		String stringGene = "";
@@ -189,6 +210,11 @@ public class Genetic extends Technique {
 	
 	public int getGenePoolSize(){
 		return genePool.size();
+	}
+	
+	public Genome[] getGenePool(){
+		Genome[] temp = genePool.toArray(new Genome[genePool.size() -1]);
+		return temp;
 	}
 	
 	/**

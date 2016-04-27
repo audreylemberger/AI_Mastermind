@@ -12,7 +12,9 @@ import java.util.Map;
  *
  */
 public class CSatisfaction extends Technique {
-	
+	//how many guesses that had to do to get it to fit constraints
+	//look at domain in partial solution
+	//proportion of possible partial assignments per guess #
 	Map<String, Boolean> previousGuesses;						// just so we don't repeat guesses
 	List<Constraint> constraints;								// growing list of constraints, each with scope and relation
 	List<Integer>[] domains;									// list of possible values for each slot

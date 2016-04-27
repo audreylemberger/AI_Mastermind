@@ -1,10 +1,17 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 /**
  * Main class
  * @author Nicole & Audrey
  *
  */
 public class Mastermind {
-
+	static BufferedWriter writer;
+	static int numGeneration = 0;
 
 	public static void main(String[] args){
 		System.out.println("Welcome to Mastermind!");
@@ -41,6 +48,7 @@ public class Mastermind {
 			numGuesses++;
 			player.update(black, red, guess);
 			
+			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
 
 			if (sol.checkCorrect(guess)){							//if the guess is correct, end
@@ -73,16 +81,53 @@ public class Mastermind {
 			
 			
 			player.update(black, red, guess);
+			numGeneration++;
+			writeStats(numGeneration, player.getAverage() );
+			
 			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
 
 			if (sol.checkCorrect(guess)){							//if the guess is correct, end
 				System.out.println("Found solution " + guessToString(guess) + " in " + numGuesses + " guesses.");
+				try {
+					writer.flush();
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				return;
 			}
 		}
 	}
 
+	public static void writeStats(int numGeneration, double average) 
+	{
+
+	    try
+	    {
+	    File file = new File("geneticdata.txt");
+	    file.createNewFile();
+
+	    writer = new BufferedWriter(new FileWriter(file));
+
+	    writer.write("Generation: " + numGeneration + " average " + average );
+	    //writer.newLine();
+	    
+
+	    }
+	    catch(FileNotFoundException e)
+	    {
+	        System.out.println("File Not Found");
+	        System.exit( 1 );
+	    }
+	    catch(IOException e)
+	    {
+	        System.out.println("something messed up");
+	        System.exit( 1 );
+	    }
+	}
 	
 	private static void playRandom(){
 		System.out.println("\nPlaying with technique Random.");
