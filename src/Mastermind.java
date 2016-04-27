@@ -10,8 +10,9 @@ import java.io.IOException;
  *
  */
 public class Mastermind {
-	static BufferedWriter writer;
-	static int numGeneration = 0;
+	private static File geneticDataFile = new File("geneticdata.txt");
+	private static BufferedWriter writer;
+	private static int numGeneration = 0;
 
 	public static void main(String[] args){
 		System.out.println("Welcome to Mastermind!");
@@ -60,6 +61,14 @@ public class Mastermind {
 	
 
 	private static void playGenetic(){
+		try {
+			geneticDataFile.createNewFile();
+			writer = new BufferedWriter(new FileWriter(geneticDataFile));
+		} catch (IOException e1) {
+			System.out.println("ERROR. COULD NOT CREATE GENETIC DATA FILE");
+			e1.printStackTrace();
+		}
+
 		System.out.println("\nPlaying with Genetic Algorithm.");
 		Solution sol = new Solution();
 		int[] solution = sol.getSolution();
@@ -82,7 +91,7 @@ public class Mastermind {
 			
 			player.update(black, red, guess);
 			numGeneration++;
-			writeStats(numGeneration, player.getAverage() );
+			writeStats(geneticDataFile, numGeneration, player.getAverage() );
 			
 			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
@@ -102,31 +111,18 @@ public class Mastermind {
 		}
 	}
 
-	public static void writeStats(int numGeneration, double average) 
+	public static void writeStats(File file, int numGeneration, double average) 
 	{
 
-	    try
-	    {
-	    File file = new File("geneticdata.txt");
-	    file.createNewFile();
+	    try {
+			writer.write("Generation: " + numGeneration + " average " + average );
+			writer.newLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
 
-	    writer = new BufferedWriter(new FileWriter(file));
-
-	    writer.write("Generation: " + numGeneration + " average " + average );
-	    //writer.newLine();
-	    
-
-	    }
-	    catch(FileNotFoundException e)
-	    {
-	        System.out.println("File Not Found");
-	        System.exit( 1 );
-	    }
-	    catch(IOException e)
-	    {
-	        System.out.println("something messed up");
-	        System.exit( 1 );
-	    }
 	}
 	
 	private static void playRandom(){
