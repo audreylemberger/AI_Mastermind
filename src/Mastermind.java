@@ -18,17 +18,12 @@ public class Mastermind {
 	public static void main(String[] args){
 		System.out.println("Welcome to Mastermind!");
 		System.out.println("Program by Nicole Hoffler and Audrey Lemberger");
-		System.out.println("Choose a technique: ....");				
-
-		//if(....)
 
 		//testPegs();			//test red and black pegs are working
 		
 		//playRandom();
-		
-		playGenetic();
-		
-		//playCSP();
+		//playGenetic();
+		playCSP();
 
 	}
 	
