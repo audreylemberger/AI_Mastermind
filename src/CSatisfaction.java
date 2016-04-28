@@ -126,6 +126,23 @@ public class CSatisfaction extends Technique {
 		}
 		return putInPrevious;
 	}
+	public int getDomainCount(){
+		int numInDomain = 0;
+		for (int i =0; i < domains.length; i++){
+			numInDomain = numInDomain + domains[i].size();
+			//System.out.println("");
+			//System.out.println("");
+		}
+		return numInDomain;
+	}
 	
+	public int getConstraintCount(){
+		int constraintCount = 0;
+		for (int i = 0; i < constraints.size();i++){
+			constraintCount++;
+		}
+		return constraintCount;
+		
+	}
 
 }

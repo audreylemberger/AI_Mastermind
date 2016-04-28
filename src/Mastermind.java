@@ -11,6 +11,7 @@ import java.io.IOException;
  */
 public class Mastermind {
 	private static File geneticDataFile = new File("geneticdata.txt");
+	private static File cspDataFile = new File("cspdata.txt");
 	private static BufferedWriter writer;
 	private static int numGeneration = 0;
 
@@ -34,26 +35,45 @@ public class Mastermind {
 	
 	private static void playCSP(){
 		System.out.println("\nPlaying with Constraint Satisfaction.");
+		try {
+			cspDataFile.createNewFile();
+			writer = new BufferedWriter(new FileWriter(cspDataFile));
+		} catch (IOException e1) {
+			System.out.println("ERROR. COULD NOT CREATE GENETIC DATA FILE");
+			e1.printStackTrace();
+		}
 		Solution sol = new Solution();
 		System.out.println(guessToString(sol.getSolution()));
 		CSatisfaction player = new CSatisfaction();
 		int[] guess = {-1, -1, -1, -1};
 		int numGuesses = 0;
+		writeCSPStats(cspDataFile, numGeneration, player.getDomainCount() );
 		
 		
 		
 		while (!sol.checkCorrect(guess)){							//play until we find the answer
+			
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
 			numGuesses++;
 			player.update(black, red, guess);
+			numGeneration++;
+			writeCSPStats(cspDataFile, numGeneration, player.getDomainCount() );
 			
 			
 			System.out.println("Guess: " + guessToString(guess) + "\t\t Black: " + black + "\t Red: " + red );
 
 			if (sol.checkCorrect(guess)){							//if the guess is correct, end
 				System.out.println("Found solution " + guessToString(guess) + " in " + numGuesses + " guesses.");
+				
+				try {
+					writer.flush();
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return;
 			}
 		}
@@ -115,7 +135,21 @@ public class Mastermind {
 	{
 
 	    try {
-			writer.write("Generation: " + numGeneration + " average " + average );
+			writer.write( numGeneration + " , " + average + " , " );
+			writer.newLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   
+
+	}
+	
+	public static void writeCSPStats(File file, int numGeneration, int numInDomain) 
+	{
+
+	    try {
+			writer.write(numGeneration + " , " + numInDomain + " , ");
 			writer.newLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

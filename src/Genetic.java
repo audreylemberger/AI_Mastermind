@@ -152,11 +152,20 @@ public class Genetic extends Technique {
 		System.out.println("PARENT 1 " +geneToString(p1));
 		System.out.println("PARENT 2 " +geneToString(p2));
 		if (geneToString(p1).equals(geneToString(p2))){
-			System.out.println("INCEST");
-			int mutantNumber = (int) Math.floor(Math.random()* 10);
-			//System.out.println("mutant number " + mutantNumber);
-			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
-			p1[randomPlace] = mutantNumber;
+//			System.out.println("INCEST");
+//			int mutantNumber = (int) Math.floor(Math.random()* 10);
+//			//System.out.println("mutant number " + mutantNumber);
+//			int randomPlace = (int) Math.floor(Math.random()* Solution.NUM_PEGS);
+//			p1[randomPlace] = mutantNumber;
+			int one = (int) Math.floor(Math.random()* 10);
+			int two = (int) Math.floor(Math.random()* 10);
+			int three = (int) Math.floor(Math.random()* 10);
+			int four = (int) Math.floor(Math.random()* 10);
+			p1[0] = one;
+			p1[1] = two;
+			p1[2] = three;
+			p1[3] = four;
+			
 		}
 		
 		for (int i = 0; i < Solution.NUM_PEGS; i++){
@@ -170,7 +179,7 @@ public class Genetic extends Technique {
 		
 		//add mutation...
 		Random random = new Random();
-		int tempRan=random.nextInt(10);
+		int tempRan=random.nextInt(50);
 		//System.out.println("random mutation " +tempRan);
 		if (tempRan < MUTATION){
 			
