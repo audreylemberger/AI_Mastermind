@@ -1,6 +1,5 @@
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -22,13 +21,14 @@ public class Mastermind {
 		//testPegs();			//test red and black pegs are working
 		
 		//playRandom();
-		//playGenetic();
-		playCSP();
+		playGenetic();
+		//playCSP();
+
 
 	}
 	
 	
-	private static void playCSP(){
+	private static int playCSP(){
 		System.out.println("\nPlaying with Constraint Satisfaction.");
 		try {
 			cspDataFile.createNewFile();
@@ -69,13 +69,14 @@ public class Mastermind {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				return;
+				return numGuesses;
 			}
 		}
+		return -1;
 	}
 	
 
-	private static void playGenetic(){
+	private static int playGenetic(){
 		try {
 			geneticDataFile.createNewFile();
 			writer = new BufferedWriter(new FileWriter(geneticDataFile));
@@ -95,9 +96,9 @@ public class Mastermind {
 		while (!sol.checkCorrect(guess)){							//play until we find the answer
 			if (player.getGenePoolSize() == 1000){
 				System.out.println("Genetic Algorithms failed");
-				return;
+				return -1;
 			}
-			System.out.println("\t\t\t\t\t\t\t\t\t\t\t(solution " + solution[0] + solution[1]+ solution[2] + solution[3]);
+			//System.out.println("\t\t\t\t\t\t\t\t\t\t\t(solution " + solution[0] + solution[1]+ solution[2] + solution[3]);
 			guess = player.makeGuess();
 			int black = sol.calcBlack(guess);
 			int red = sol.calcRed(guess);
@@ -121,9 +122,10 @@ public class Mastermind {
 					e.printStackTrace();
 				}
 				
-				return;
+				return numGeneration;
 			}
 		}
+		return -1;
 	}
 
 	public static void writeStats(File file, int numGeneration, double average) 

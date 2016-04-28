@@ -79,7 +79,7 @@ public class Genetic extends Technique {
 	 * Put them into the kidStack
 	 */
 	public void fillStack(){
-		System.out.println("filling in kids...");
+		System.out.println("mating season");
 		kidStack = new Stack<int[]>();
 		
 		Genome[] temp = genePool.toArray(new Genome[genePool.size() -1]);
@@ -149,8 +149,8 @@ public class Genetic extends Technique {
 		
 		//first half to parent 1
 		//second half to parent 2
-		System.out.println("PARENT 1 " +geneToString(p1));
-		System.out.println("PARENT 2 " +geneToString(p2));
+		//System.out.println("PARENT 1 " +geneToString(p1));
+		//System.out.println("PARENT 2 " +geneToString(p2));
 		if (geneToString(p1).equals(geneToString(p2))){
 //			System.out.println("INCEST");
 //			int mutantNumber = (int) Math.floor(Math.random()* 10);
