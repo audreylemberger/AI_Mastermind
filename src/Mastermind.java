@@ -21,8 +21,8 @@ public class Mastermind {
 		//testPegs();			//test red and black pegs are working
 		
 		//playRandom();
-		playGenetic();
-		//playCSP();
+		//playGenetic();
+		playCSP();
 
 
 	}
@@ -38,7 +38,6 @@ public class Mastermind {
 			e1.printStackTrace();
 		}
 		Solution sol = new Solution();
-		System.out.println(guessToString(sol.getSolution()));
 		CSatisfaction player = new CSatisfaction();
 		int[] guess = {-1, -1, -1, -1};
 		int numGuesses = 0;
